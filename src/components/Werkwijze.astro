@@ -1,0 +1,43 @@
+---
+const stappen = [
+  {
+    nr: "01",
+    titel: "Portefeuille erin",
+    tekst:
+      "Export uit ANVA/Level, CCS of Progress OpenEdge. CSV, ODBC of Access — het formaat dat je toch al hebt voor de conversie.",
+  },
+  {
+    nr: "02",
+    titel: "Scan tijdens de conversie",
+    tekst:
+      "Elke polis wordt gecheckt tegen een normprofiel per productlijn. De scan draait mee in de conversierun zelf: nul vertraging.",
+  },
+  {
+    nr: "03",
+    titel: "Leads eruit",
+    tekst:
+      "Per klant: welk gat, welk product, welke geschatte jaarpremie. Direct klaar voor de migratiebrief of het CRM.",
+  },
+];
+---
+
+<section id="werkwijze" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+  <div class="reveal">
+    <p class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-amber">Werkwijze</p>
+    <h2 class="font-display mt-3 max-w-2xl text-3xl font-800 tracking-tight text-paper sm:text-4xl">
+      Drie stappen, in de volgorde waarin het echt gebeurt.
+    </h2>
+  </div>
+
+  <div class="mt-10 grid gap-5 md:grid-cols-3">
+    {
+      stappen.map((stap) => (
+        <div class="reveal rounded-2xl border border-line bg-surface p-7 transition-colors duration-200 hover:border-amber/30">
+          <p class="font-mono text-3xl font-bold text-amber">{stap.nr}</p>
+          <h3 class="font-display mt-4 text-xl font-700 text-paper">{stap.titel}</h3>
+          <p class="mt-3 leading-relaxed text-muted">{stap.tekst}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>

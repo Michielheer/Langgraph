@@ -1,0 +1,30 @@
+---
+const cijfers = [
+  { waarde: "359", label: "polissen in de portefeuille" },
+  { waarde: "€ 79.117", label: "huidige jaarpremie" },
+  { waarde: "89", label: "woonpolissen zonder rechtsbijstand" },
+  { waarde: "104", label: "leads gevonden" },
+];
+---
+
+<section id="cases" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+  <div class="reveal rounded-2xl border border-line bg-surface p-8 sm:p-12">
+    <p class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-amber">Bewijs</p>
+    <blockquote class="font-display mt-5 max-w-3xl text-2xl font-700 leading-snug tracking-tight text-paper sm:text-3xl">
+      "Uit één echte portefeuille van 125 klanten haalden we 104 leads en
+      <span class="text-amber">~€ 24.600</span> aan zichtbare jaarpremie."
+    </blockquote>
+    <p class="mt-4 font-mono text-sm text-muted">Puur uit de conversiedata, zonder één extern bestand.</p>
+
+    <div class="mt-10 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+      {
+        cijfers.map((c) => (
+          <div class="bg-surface-2 p-6">
+            <p class="font-mono text-2xl font-bold text-paper">{c.waarde}</p>
+            <p class="mt-1.5 text-sm text-muted">{c.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

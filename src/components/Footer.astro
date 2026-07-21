@@ -1,0 +1,81 @@
+---
+const kolommen = [
+  {
+    titel: "Product",
+    links: [
+      { label: "Werkwijze", href: "#werkwijze" },
+      { label: "Producten", href: "#producten" },
+      { label: "Cases", href: "#cases" },
+    ],
+  },
+  {
+    titel: "Bedrijf",
+    links: [
+      { label: "Over ons", href: "#over-ons" },
+      { label: "Contact", href: "#contact" },
+    ],
+  },
+];
+---
+
+<footer class="border-t border-line">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="grid gap-10 md:grid-cols-[2fr_1fr_1fr]">
+      <div>
+        <a href="#top" class="flex items-center gap-2.5" aria-label="House of Intelligence — naar boven">
+          <span class="pulse-dot inline-block h-2.5 w-2.5 rounded-full bg-amber" aria-hidden="true"></span>
+          <span class="font-display text-lg font-800 tracking-tight text-paper">House of Intelligence</span>
+        </a>
+        <p class="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+          Werkende software voor het Nederlandse volmacht- en verzekeringsdomein.
+          Premielek-detectie, risico-inschatting en conversiepraktijk onder één dak.
+        </p>
+        <div class="mt-5 flex items-center gap-3">
+          <a
+            href="https://www.linkedin.com/company/house-of-intelligence/"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors duration-200 hover:border-amber/40 hover:text-paper"
+            aria-label="House of Intelligence op LinkedIn"
+            rel="noopener"
+            target="_blank"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" />
+            </svg>
+          </a>
+          <a
+            href="mailto:info@houseofintelligence.nl"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors duration-200 hover:border-amber/40 hover:text-paper"
+            aria-label="Mail House of Intelligence"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+              <path d="m22 6-10 7L2 6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {
+        kolommen.map((kolom) => (
+          <nav aria-label={`Footer: ${kolom.titel}`}>
+            <p class="font-mono text-xs font-medium uppercase tracking-widest text-muted">{kolom.titel}</p>
+            <ul class="mt-4 space-y-2.5">
+              {kolom.links.map((link) => (
+                <li>
+                  <a href={link.href} class="text-sm text-paper/80 transition-colors duration-200 hover:text-paper">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>© 2026 House of Intelligence B.V. · KVK 85325457</p>
+      <p>Oude Vest 9, 4811 HR Breda</p>
+    </div>
+  </div>
+</footer>

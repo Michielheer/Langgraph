@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #071a1f;
+  --color-surface: #0b2830;
+  --color-surface-2: #0f3540;
+  --color-amber: #ffb020;
+  --color-mint: #4fd1a8;
+  --color-paper: #e9f1ef;
+  --color-muted: #83a29f;
+  --color-line: rgba(233, 241, 239, 0.09);
+
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  /* Ambient gloed: amber rechtsboven, mint linksonder — zeer subtiel */
+  background-image:
+    radial-gradient(60rem 40rem at 110% -10%, rgba(255, 176, 32, 0.07), transparent 60%),
+    radial-gradient(55rem 40rem at -15% 110%, rgba(79, 209, 168, 0.06), transparent 60%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(255, 176, 32, 0.3);
+}
+
+a,
+button,
+summary,
+[role="button"] {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Amber CTA met zachte gloed */
+.btn-primary {
+  background: var(--color-amber);
+  color: #241800;
+  box-shadow: 0 0 24px rgba(255, 176, 32, 0.25);
+  transition: box-shadow 200ms ease, transform 200ms ease, background 200ms ease;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 40px rgba(255, 176, 32, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  border: 1px solid var(--color-line);
+  color: var(--color-paper);
+  transition: border-color 200ms ease, background 200ms ease;
+}
+.btn-secondary:hover {
+  border-color: rgba(233, 241, 239, 0.3);
+  background: rgba(233, 241, 239, 0.04);
+}
+
+/* Scroll-reveal — alleen verbergen als JS draait (html.js), anders blijft alles zichtbaar */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Puls-dot in de wordmark */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 176, 32, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 176, 32, 0);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .pulse-dot {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
