@@ -1,4 +1,6 @@
 ---
+import Logo from "./Logo.astro";
+
 const links = [
   { href: "#werkwijze", label: "Werkwijze" },
   { href: "#producten", label: "Producten" },
@@ -13,9 +15,9 @@ const links = [
     class="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6"
     aria-label="Hoofdnavigatie"
   >
-    <a href="#top" class="flex items-center gap-2.5" aria-label="House of Intelligence — naar boven">
-      <span class="pulse-dot inline-block h-2.5 w-2.5 rounded-full bg-periwinkle" aria-hidden="true"></span>
-      <span class="font-display text-lg font-medium tracking-tight text-indigo-ink">
+    <a href="#top" class="flex items-center gap-3" aria-label="House of Intelligence — naar boven">
+      <Logo class="h-[22px] w-auto text-indigo-ink" />
+      <span class="hidden font-display text-lg font-medium tracking-tight text-indigo-ink sm:inline">
         House of <span class="underline decoration-periwinkle decoration-2 underline-offset-4">Intelligence</span>
       </span>
     </a>

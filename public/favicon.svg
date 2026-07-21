@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#f9f9fb"/>
-  <text x="4.5" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#1f1f47">HOI</text>
-  <circle cx="26" cy="8" r="3" fill="#576cdb"/>
+  <rect width="32" height="32" rx="8" fill="#74dfb4"/>
+  <g transform="translate(4 10.8) scale(0.183)" fill="#171a1c">
+    <rect x="0" y="0.8" width="19.2" height="54.4" rx="5.6"/>
+    <rect x="26.4" y="0.8" width="19.2" height="54.4" rx="5.6"/>
+    <circle cx="80" cy="27.6" r="23.2"/>
+    <rect x="109.6" y="36" width="20.8" height="20.8" rx="4"/>
+  </g>
 </svg>
