@@ -1,17 +1,38 @@
-# Lavans BV Bedrijfsassistent
+# House of Intelligence — website
 
-Dit project implementeert een multi-agent systeem met LangGraph, bedoeld om medewerkers van Lavans BV te ondersteunen bij het automatiseren van bedrijfsprocessen, het analyseren van data en het stroomlijnen van interne communicatie.
+Marketing-/bedrijfssite voor House of Intelligence B.V. (Breda): insurtech- en
+AI/data-consultancy voor het Nederlandse volmacht- en verzekeringsdomein, met
+**Leaklight** (premielek-detectie tijdens polisconversie) als vlaggenschip.
 
-## Functionaliteiten
-- **Invoer Verwerking:** Verzamelt gebruikersverzoeken via diverse kanalen.
-- **Geautomatiseerde Analyses:** Voert analyses uit op planning, voorraadbeheer, rapportage en klantcontact.
-- **Menselijke Validatie:** Integreert human-in-the-loop voor kritieke beslissingen.
-- **Externe Data Integratie:** Raadpleegt externe bronnen voor aanvullende inzichten.
-- **Feedback Loop:** Past het systeem aan op basis van gebruikersfeedback en expertbeoordelingen.
+## Stack
 
-## Installatie en Configuratie
+- [Astro](https://astro.build) 5 — statische site
+- [Tailwind CSS](https://tailwindcss.com) 4 (via `@tailwindcss/vite`)
+- [Three.js](https://threejs.org) voor de 3D live-scan in de hero — draait in een
+  Web Worker op een OffscreenCanvas zodat de main thread vrij blijft (Lighthouse
+  performance 100); main-thread fallback voor oudere browsers, statisch 2D-grid
+  zonder WebGL
+- Vanilla JS voor scroll-reveal en kaart-tilt — geen verdere libraries
+- Fonts: Inter (display + body-fallback), Helvetica Neue voor bodytekst
 
-1. **Clone de repository:**
-   ```bash
-   git clone https://github.com/jouw-gebruikersnaam/lavans-bv-bedrijfsassistent.git
-   cd lavans-bv-bedrijfsassistent
+## Ontwikkelen
+
+```bash
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # productie-build naar dist/
+npm run preview   # bekijk de productie-build lokaal
+```
+
+## Deploy
+
+Statische output in `dist/` — direct te hosten op Vercel, Netlify of elke
+statische host. Geen server of environment-variabelen nodig.
+
+## Design-tokens
+
+Vastgelegd in `src/styles/global.css` (`@theme`): licht cloud-wit canvas
+(`--color-cloud`), witte kaarten, één periwinkle accent (`--color-periwinkle`)
+voor alle interactieve momenten. In de live-scan is periwinkle de scanbalk,
+**coral** het "lek gevonden"-signaal en **mint** "gedekt". Pill-buttons (9999px),
+16px kaartranden en violet-getinte schaduwen volgen het RevenueCat-register.

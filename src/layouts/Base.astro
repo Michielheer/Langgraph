@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f9f9fb" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen">
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+    <slot />
+    <script>
+      // Scroll-reveal; bij reduced motion is alles al zichtbaar via CSS.
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+      // Subtiele 3D-tilt op kaarten — alleen met fijne pointer en zonder reduced motion
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (fine && !noMotion) {
+        document.querySelectorAll<HTMLElement>(".tilt").forEach((card) => {
+          card.addEventListener("pointermove", (e) => {
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            card.style.setProperty("--tilt-x", `${(-y * 4).toFixed(2)}deg`);
+            card.style.setProperty("--tilt-y", `${(x * 5).toFixed(2)}deg`);
+          });
+          card.addEventListener("pointerleave", () => {
+            card.style.setProperty("--tilt-x", "0deg");
+            card.style.setProperty("--tilt-y", "0deg");
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

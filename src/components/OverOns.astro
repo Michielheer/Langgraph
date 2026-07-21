@@ -1,0 +1,74 @@
+---
+import Logo from "./Logo.astro";
+
+const pijlers = [
+  {
+    titel: "Portefeuille-optimalisatie",
+    tekst:
+      "We halen meer waarde uit de portefeuille die je al hebt. Niet met nieuwe leads van buiten, maar met de dekkingsgaten die er nu al in zitten.",
+  },
+  {
+    titel: "Cross-sell & upsell, onderbouwd",
+    tekst:
+      "Elk gat is een concrete kans: een ontbrekend product erbij (cross-sell) of een te lage dekking ophogen (upsell) — met de premie er meteen bij.",
+  },
+  {
+    titel: "Werkende software",
+    tekst:
+      "Geen adviesrapport dat in een la verdwijnt. Tools die meedraaien in je conversie- en beheerproces en per klant een lijst opleveren.",
+  },
+];
+---
+
+<section id="over-ons" class="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+  <div class="grid gap-12 md:grid-cols-2 md:gap-16">
+    <div class="reveal">
+      <p class="font-display text-[13px] font-medium uppercase tracking-[0.16em] text-periwinkle-deep">Over HOI</p>
+      <h2 class="font-display mt-4 text-[clamp(2rem,3.6vw,3rem)] font-light leading-[1.08] tracking-[-0.03em] text-indigo-ink">
+        Portefeuille-optimalisatie voor het volmachtdomein.
+      </h2>
+
+      <div class="mt-8 flex items-center gap-5 rounded-2xl bg-brand-mint p-7">
+        <Logo class="h-9 w-auto text-ink sm:h-11" />
+        <p class="font-display text-sm font-medium leading-snug text-ink/80">
+          House of Intelligence B.V.<br />Insurtech · AI &amp; data · Breda
+        </p>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p class="text-lg leading-relaxed text-storm">
+        House of Intelligence bouwt werkende software voor het Nederlandse volmacht- en
+        verzekeringsdomein. Onze basis is een jarenlange conversie- en migratiepraktijk: we kennen
+        de systemen, de datamodellen en de valkuilen van binnenuit.
+      </p>
+      <p class="mt-4 text-lg leading-relaxed text-storm">
+        Daar bouwen we producten bovenop met één doel — meer halen uit de portefeuille die je al
+        beheert. Elke gemiste dekking die we vinden is een concrete cross- of upsell-kans, met de
+        geschatte jaarpremie er direct bij. Geen concepten; tools die in productie meedraaien.
+      </p>
+
+      <dl class="mt-8 space-y-4 border-t border-mist pt-6 text-sm">
+        <div class="flex gap-6">
+          <dt class="w-16 shrink-0 font-display font-medium text-fog">Adres</dt>
+          <dd class="text-storm">Oude Vest 9, 4811 HR Breda</dd>
+        </div>
+        <div class="flex gap-6">
+          <dt class="w-16 shrink-0 font-display font-medium text-fog">KVK</dt>
+          <dd class="text-storm">85325457</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="mt-14 grid gap-6 md:grid-cols-3">
+    {
+      pijlers.map((p) => (
+        <div class="reveal tilt rounded-2xl border border-mist bg-paper p-8 hover:border-lilac hover:shadow-float">
+          <h3 class="font-display text-xl font-medium tracking-tight text-indigo-ink">{p.titel}</h3>
+          <p class="mt-2.5 leading-relaxed text-storm">{p.tekst}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
