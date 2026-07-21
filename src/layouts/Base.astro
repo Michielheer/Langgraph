@@ -43,6 +43,25 @@ const { title, description } = Astro.props;
         { threshold: 0.12 },
       );
       document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+      // 3D-tilt op kaarten — alleen met fijne pointer en zonder reduced motion
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (fine && !noMotion) {
+        document.querySelectorAll<HTMLElement>(".tilt").forEach((card) => {
+          card.addEventListener("pointermove", (e) => {
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            card.style.setProperty("--tilt-x", `${(-y * 6).toFixed(2)}deg`);
+            card.style.setProperty("--tilt-y", `${(x * 8).toFixed(2)}deg`);
+          });
+          card.addEventListener("pointerleave", () => {
+            card.style.setProperty("--tilt-x", "0deg");
+            card.style.setProperty("--tilt-y", "0deg");
+          });
+        });
+      }
     </script>
   </body>
 </html>

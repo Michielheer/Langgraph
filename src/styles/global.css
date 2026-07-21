@@ -81,6 +81,13 @@ html.js .reveal.is-visible {
   transform: none;
 }
 
+/* 3D-tilt op kaarten (JS zet de custom properties) */
+.tilt {
+  transform: perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 200ms ease, border-color 200ms ease;
+  will-change: transform;
+}
+
 /* Puls-dot in de wordmark */
 @keyframes pulse-dot {
   0%,

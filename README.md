@@ -8,7 +8,11 @@ AI/data-consultancy voor het Nederlandse volmacht- en verzekeringsdomein, met
 
 - [Astro](https://astro.build) 5 — statische site
 - [Tailwind CSS](https://tailwindcss.com) 4 (via `@tailwindcss/vite`)
-- Vanilla JS voor de live-scan animatie en scroll-reveal — geen verdere libraries
+- [Three.js](https://threejs.org) voor de 3D live-scan in de hero — draait in een
+  Web Worker op een OffscreenCanvas zodat de main thread vrij blijft (Lighthouse
+  performance 100); main-thread fallback voor oudere browsers, statisch 2D-grid
+  zonder WebGL
+- Vanilla JS voor scroll-reveal en kaart-tilt — geen verdere libraries
 - Fonts: Bricolage Grotesque · Inter · JetBrains Mono (Google Fonts)
 
 ## Ontwikkelen
