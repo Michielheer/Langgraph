@@ -45,7 +45,7 @@ const { title, description } = Astro.props;
       );
       document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-      // Subtiele 3D-tilt op kaarten — alleen met fijne pointer en zonder reduced motion
+      // Subtiele 3D-tilt op kaarten: alleen met fijne pointer en zonder reduced motion
       const fine = window.matchMedia("(pointer: fine)").matches;
       const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (fine && !noMotion) {
