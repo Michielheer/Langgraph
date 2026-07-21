@@ -1,10 +1,9 @@
 ---
-// Klanten / social proof. Echte logo's in nette witte tegels; Univé volgt als
-// wordmerk tot het officiële logo is aangeleverd.
+// Klanten / social proof. Echte logo's in nette witte tegels.
 const klanten = [
   { naam: "NH1816 Verzekeringen", src: "/logos/nh1816.png", w: 1280, h: 582 },
   { naam: "Mevas", src: "/logos/mevas.jpg", w: 460, h: 300 },
-  { naam: "Univé", src: null },
+  { naam: "Univé", src: "/logos/unive.webp", w: 400, h: 169 },
 ];
 ---
 
@@ -16,18 +15,14 @@ const klanten = [
     {
       klanten.map((k) => (
         <div class="flex h-20 min-w-[168px] items-center justify-center rounded-2xl border border-mist bg-paper px-8">
-          {k.src ? (
-            <img
-              src={k.src}
-              alt={`Logo ${k.naam}`}
-              width={k.w}
-              height={k.h}
-              loading="lazy"
-              class="max-h-11 w-auto"
-            />
-          ) : (
-            <span class="font-display text-2xl font-semibold tracking-tight text-slate">{k.naam}</span>
-          )}
+          <img
+            src={k.src}
+            alt={`Logo ${k.naam}`}
+            width={k.w}
+            height={k.h}
+            loading="lazy"
+            class="max-h-11 w-auto"
+          />
         </div>
       ))
     }
