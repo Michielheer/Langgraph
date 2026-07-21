@@ -31,8 +31,8 @@ const sporen = {
       Particulier én zakelijk, in één analyse.
     </h2>
     <p class="mt-5 text-lg leading-relaxed text-storm">
-      Dezelfde methode, twee sporen. We leggen de huidige dekking naast het normprofiel en
-      maken het tekort zichtbaar. Wissel van spoor en zie de analyse mee bewegen.
+      Dezelfde methode, twee sporen. Bij particulier scannen we de polissen per klant; bij zakelijk
+      leggen we de dekking naast het normprofiel per branche. Wissel van spoor en zie de analyse veranderen.
     </p>
   </div>
 
@@ -78,17 +78,34 @@ const sporen = {
       }
     </div>
 
-    <!-- 3D-visualisatie -->
+    <!-- 3D-visualisatie: tegeltjes (particulier) of staven (zakelijk) -->
     <div class="rounded-2xl border border-mist bg-paper p-5 shadow-float sm:p-6">
+      <!-- Particulier: polis-scan -->
       <div
-        id="cov-stage"
+        id="stage-part"
         class="relative h-80 overflow-hidden rounded-xl bg-cloud"
+        role="img"
+        aria-label="3D-scan van polissen: een periwinkle scanlijn veegt over een raster; polissen met een dekkingsgat lichten coral op, gedekte polissen zijn mint."
+      >
+        <canvas id="canvas-part" class="h-full w-full"></canvas>
+      </div>
+      <!-- Zakelijk: staafdiagram -->
+      <div
+        id="stage-zak"
+        class="relative hidden h-80 overflow-hidden rounded-xl bg-cloud"
         role="img"
         aria-label="3D-staafdiagram: per categorie de huidige dekking in mint, met een coral kap voor het tekort tot het normprofiel."
       >
-        <canvas id="cov-canvas" class="h-full w-full"></canvas>
+        <canvas id="canvas-zak" class="h-full w-full"></canvas>
       </div>
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-mist pt-4 text-[13px] text-fog">
+
+      <!-- Legenda's -->
+      <div id="legend-part" class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-mist pt-4 text-[13px] text-fog">
+        <span class="flex items-center gap-2"><span class="inline-block h-3 w-3 rounded-[3px] bg-mint"></span> Gedekt</span>
+        <span class="flex items-center gap-2"><span class="inline-block h-3 w-3 rounded-[3px] bg-coral"></span> Dekkingsgat</span>
+        <span class="flex items-center gap-2"><span class="inline-block h-[3px] w-4 rounded bg-periwinkle"></span> Scanlijn</span>
+      </div>
+      <div id="legend-zak" class="mt-4 hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-mist pt-4 text-[13px] text-fog">
         <span class="flex items-center gap-2"><span class="inline-block h-3 w-3 rounded-[3px] bg-mint"></span> Huidige dekking</span>
         <span class="flex items-center gap-2"><span class="inline-block h-3 w-3 rounded-[3px] bg-coral"></span> Tekort t.o.v. norm</span>
         <span class="flex items-center gap-2"><span class="inline-block h-[3px] w-4 rounded bg-periwinkle"></span> Normprofiel</span>
@@ -98,47 +115,45 @@ const sporen = {
 </section>
 
 <script>
-  const TRACKS = [
-    {
-      key: "particulier",
-      bars: [
-        { code: "OPS", actual: 0.9, norm: 0.95 },
-        { code: "INB", actual: 0.55, norm: 0.9 },
-        { code: "AVP", actual: 0.15, norm: 0.75 },
-        { code: "RB", actual: 0.35, norm: 0.72 },
-        { code: "AUTO", actual: 0.82, norm: 0.82 },
-        { code: "REIS", actual: 0.6, norm: 0.62 },
-      ],
-    },
-    {
-      key: "zakelijk",
-      bars: [
-        { code: "GEB", actual: 0.86, norm: 0.95 },
-        { code: "INV", actual: 0.5, norm: 0.92 },
-        { code: "BS", actual: 0.28, norm: 0.82 },
-        { code: "AVB", actual: 0.6, norm: 0.85 },
-        { code: "RB", actual: 0.42, norm: 0.72 },
-        { code: "CYBER", actual: 0.15, norm: 0.8 },
-      ],
-    },
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const dpr = () => Math.min(window.devicePixelRatio, 2);
+
+  // ---- Particulier: tegeltjes-scan (hergebruik scanScene) ----
+  const PART_COLS = 8;
+  const PART_ROWS = 6;
+  const PART_LABELS = ["OPS", "INB", "AVP", "RB", "AUTO", "BR"];
+  let seed = 20260721;
+  const rand = () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const partCells = Array.from({ length: PART_COLS * PART_ROWS }, () => ({
+    leak: rand() < 0.3,
+    label: PART_LABELS[Math.floor(rand() * PART_LABELS.length)],
+  }));
+
+  // ---- Zakelijk: staven (coverageScene) ----
+  const ZAK_BARS = [
+    { code: "GEB", actual: 0.86, norm: 0.95 },
+    { code: "INV", actual: 0.5, norm: 0.92 },
+    { code: "BS", actual: 0.28, norm: 0.82 },
+    { code: "AVB", actual: 0.6, norm: 0.85 },
+    { code: "RB", actual: 0.42, norm: 0.72 },
+    { code: "CYBER", actual: 0.15, norm: 0.8 },
   ];
 
-  const stage = document.getElementById("cov-stage")!;
-  const canvas = document.getElementById("cov-canvas") as HTMLCanvasElement;
+  const stagePart = document.getElementById("stage-part")!;
+  const stageZak = document.getElementById("stage-zak")!;
+  const canvasPart = document.getElementById("canvas-part") as HTMLCanvasElement;
+  const canvasZak = document.getElementById("canvas-zak") as HTMLCanvasElement;
   const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".seg-btn"));
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  let current = "particulier";
-  let setTrackFn: ((key: string) => void) | null = null;
-
-  const wire = (api: {
-    resize: (w: number, h: number) => void;
-    setPointer: (x: number, y: number) => void;
-    clearPointer: () => void;
-    setTrack: (k: string) => void;
-  }) => {
-    setTrackFn = api.setTrack;
-    if (current !== "particulier") api.setTrack(current);
+  const wirePointer = (
+    stage: HTMLElement,
+    api: { resize: (w: number, h: number) => void; setPointer: (x: number, y: number) => void; clearPointer: () => void },
+  ) => {
     new ResizeObserver(() => api.resize(stage.clientWidth, stage.clientHeight)).observe(stage);
     stage.addEventListener("pointermove", (e) => {
       const r = stage.getBoundingClientRect();
@@ -147,61 +162,101 @@ const sporen = {
     stage.addEventListener("pointerleave", () => api.clearPointer());
   };
 
-  const sceneOpts = () => ({
-    width: stage.clientWidth,
-    height: stage.clientHeight,
-    dpr: Math.min(window.devicePixelRatio, 2),
-    tracks: TRACKS,
-    initial: "particulier",
-    reducedMotion,
-  });
+  let partApi: { rescan: () => void } | null = null;
+  let zakReady = false;
+  let partReady = false;
 
-  const init = async () => {
-    if ("transferControlToOffscreen" in canvas) {
-      const off = canvas.transferControlToOffscreen();
-      const worker = new Worker(new URL("../scripts/coverageWorker.ts", import.meta.url), { type: "module" });
-      worker.postMessage({ type: "init", canvas: off, ...sceneOpts() }, [off]);
-      wire({
-        resize: (w, h) => worker.postMessage({ type: "resize", width: w, height: h }),
-        setPointer: (x, y) => worker.postMessage({ type: "pointer", x, y }),
-        clearPointer: () => worker.postMessage({ type: "pointerleave" }),
-        setTrack: (k) => worker.postMessage({ type: "track", key: k }),
-      });
-    } else {
-      const { initCoverageScene } = await import("../scripts/coverageScene");
-      wire(initCoverageScene({ canvas, ...sceneOpts() }));
+  const initPart = async () => {
+    if (partReady) return;
+    partReady = true;
+    const opts = {
+      width: stagePart.clientWidth,
+      height: stagePart.clientHeight,
+      dpr: dpr(),
+      cols: PART_COLS,
+      rows: PART_ROWS,
+      cellSpecs: partCells,
+      reducedMotion,
+    };
+    try {
+      if ("transferControlToOffscreen" in canvasPart) {
+        const off = canvasPart.transferControlToOffscreen();
+        const worker = new Worker(new URL("../scripts/scanWorker.ts", import.meta.url), { type: "module" });
+        worker.postMessage({ type: "init", canvas: off, ...opts }, [off]);
+        partApi = { rescan: () => worker.postMessage({ type: "rescan" }) };
+        wirePointer(stagePart, {
+          resize: (w, h) => worker.postMessage({ type: "resize", width: w, height: h }),
+          setPointer: (x, y) => worker.postMessage({ type: "pointer", x, y }),
+          clearPointer: () => worker.postMessage({ type: "pointerleave" }),
+        });
+      } else {
+        const { initScanScene } = await import("../scripts/scanScene");
+        const api = initScanScene({ canvas: canvasPart, ...opts, setCounters: () => {} });
+        partApi = { rescan: api.rescan };
+        wirePointer(stagePart, api);
+      }
+    } catch {
+      stagePart.classList.add("hidden");
     }
   };
 
-  // Toggle: content + 3D-spoor
+  const initZak = async () => {
+    if (zakReady) return;
+    zakReady = true;
+    const opts = {
+      width: stageZak.clientWidth,
+      height: stageZak.clientHeight,
+      dpr: dpr(),
+      tracks: [{ key: "zakelijk", bars: ZAK_BARS }],
+      initial: "zakelijk",
+      reducedMotion,
+    };
+    try {
+      if ("transferControlToOffscreen" in canvasZak) {
+        const off = canvasZak.transferControlToOffscreen();
+        const worker = new Worker(new URL("../scripts/coverageWorker.ts", import.meta.url), { type: "module" });
+        worker.postMessage({ type: "init", canvas: off, ...opts }, [off]);
+        wirePointer(stageZak, {
+          resize: (w, h) => worker.postMessage({ type: "resize", width: w, height: h }),
+          setPointer: (x, y) => worker.postMessage({ type: "pointer", x, y }),
+          clearPointer: () => worker.postMessage({ type: "pointerleave" }),
+        });
+      } else {
+        const { initCoverageScene } = await import("../scripts/coverageScene");
+        wirePointer(stageZak, initCoverageScene({ canvas: canvasZak, ...opts }));
+      }
+    } catch {
+      stageZak.classList.add("hidden");
+    }
+  };
+
   const setActive = (key: string) => {
-    current = key;
     buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.track === key)));
     document.querySelectorAll<HTMLElement>(".spoor-panel").forEach((p) => {
       p.classList.toggle("hidden", p.id !== `panel-${key}`);
     });
-    setTrackFn?.(key);
+    const zak = key === "zakelijk";
+    stagePart.classList.toggle("hidden", zak);
+    stageZak.classList.toggle("hidden", !zak);
+    document.getElementById("legend-part")!.classList.toggle("hidden", zak);
+    document.getElementById("legend-zak")!.classList.toggle("hidden", !zak);
+    if (zak) initZak();
+    else partApi?.rescan();
   };
   buttons.forEach((b) => b.addEventListener("click", () => setActive(b.dataset.track!)));
 
-  const start = () => {
-    init().catch(() => {
-      // WebGL niet beschikbaar: verberg de canvas-kaart, de tekst blijft volledig bruikbaar
-      stage.closest(".rounded-2xl")?.classList.add("hidden");
-    });
-  };
-  const startIdle = () =>
-    "requestIdleCallback" in window ? requestIdleCallback(() => start(), { timeout: 2500 }) : setTimeout(start, 300);
+  const startIdle = (fn: () => void) =>
+    "requestIdleCallback" in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 300);
 
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         io.disconnect();
-        startIdle();
+        startIdle(() => initPart());
       }
     });
-    io.observe(stage);
+    io.observe(stagePart);
   } else {
-    startIdle();
+    startIdle(() => initPart());
   }
 </script>
