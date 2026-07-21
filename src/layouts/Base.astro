@@ -16,21 +16,22 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#f9f9fb" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen antialiased">
+  <body class="min-h-screen">
     <script is:inline>
       document.documentElement.classList.add("js");
     </script>
     <slot />
     <script>
-      // Scroll-reveal met IntersectionObserver; bij reduced motion is alles al zichtbaar via CSS.
+      // Scroll-reveal; bij reduced motion is alles al zichtbaar via CSS.
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
@@ -44,7 +45,7 @@ const { title, description } = Astro.props;
       );
       document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-      // 3D-tilt op kaarten — alleen met fijne pointer en zonder reduced motion
+      // Subtiele 3D-tilt op kaarten — alleen met fijne pointer en zonder reduced motion
       const fine = window.matchMedia("(pointer: fine)").matches;
       const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (fine && !noMotion) {
@@ -53,8 +54,8 @@ const { title, description } = Astro.props;
             const r = card.getBoundingClientRect();
             const x = (e.clientX - r.left) / r.width - 0.5;
             const y = (e.clientY - r.top) / r.height - 0.5;
-            card.style.setProperty("--tilt-x", `${(-y * 6).toFixed(2)}deg`);
-            card.style.setProperty("--tilt-y", `${(x * 8).toFixed(2)}deg`);
+            card.style.setProperty("--tilt-x", `${(-y * 4).toFixed(2)}deg`);
+            card.style.setProperty("--tilt-y", `${(x * 5).toFixed(2)}deg`);
           });
           card.addEventListener("pointerleave", () => {
             card.style.setProperty("--tilt-x", "0deg");

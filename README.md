@@ -13,7 +13,7 @@ AI/data-consultancy voor het Nederlandse volmacht- en verzekeringsdomein, met
   performance 100); main-thread fallback voor oudere browsers, statisch 2D-grid
   zonder WebGL
 - Vanilla JS voor scroll-reveal en kaart-tilt — geen verdere libraries
-- Fonts: Bricolage Grotesque · Inter · JetBrains Mono (Google Fonts)
+- Fonts: Inter (display + body-fallback), Helvetica Neue voor bodytekst
 
 ## Ontwikkelen
 
@@ -31,6 +31,8 @@ statische host. Geen server of environment-variabelen nodig.
 
 ## Design-tokens
 
-Vastgelegd in `src/styles/global.css` (`@theme`): petrol-achtergrond (`--color-ink`),
-amber als "lek gevonden"-signaal, mint als "gedekt". Cijfers en labels staan
-altijd in JetBrains Mono.
+Vastgelegd in `src/styles/global.css` (`@theme`): licht cloud-wit canvas
+(`--color-cloud`), witte kaarten, één periwinkle accent (`--color-periwinkle`)
+voor alle interactieve momenten. In de live-scan is periwinkle de scanbalk,
+**coral** het "lek gevonden"-signaal en **mint** "gedekt". Pill-buttons (9999px),
+16px kaartranden en violet-getinte schaduwen volgen het RevenueCat-register.

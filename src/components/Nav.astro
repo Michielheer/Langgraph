@@ -8,52 +8,57 @@ const links = [
 ];
 ---
 
-<header class="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/85 backdrop-blur-md">
-  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6" aria-label="Hoofdnavigatie">
+<header class="sticky top-0 z-50 border-b border-mist bg-paper/90 backdrop-blur-md">
+  <nav
+    class="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6"
+    aria-label="Hoofdnavigatie"
+  >
     <a href="#top" class="flex items-center gap-2.5" aria-label="House of Intelligence — naar boven">
-      <span class="pulse-dot inline-block h-2.5 w-2.5 rounded-full bg-amber" aria-hidden="true"></span>
-      <span class="font-display text-lg font-800 tracking-tight text-paper">House of Intelligence</span>
+      <span class="pulse-dot inline-block h-2.5 w-2.5 rounded-full bg-periwinkle" aria-hidden="true"></span>
+      <span class="font-display text-lg font-medium tracking-tight text-indigo-ink">
+        House of <span class="underline decoration-periwinkle decoration-2 underline-offset-4">Intelligence</span>
+      </span>
     </a>
 
-    <div class="hidden items-center gap-7 md:flex">
+    <div class="hidden items-center gap-8 md:flex">
       {
         links.map((link) => (
           <a
             href={link.href}
-            class="text-sm font-medium text-muted transition-colors duration-200 hover:text-paper"
+            class="font-display text-sm font-normal text-indigo-ink/80 transition-colors duration-200 hover:text-indigo-ink"
           >
             {link.label}
           </a>
         ))
       }
-      <a href="#contact" class="btn-primary rounded-lg px-4 py-2 text-sm font-semibold">Plan een scan</a>
+      <a href="#contact" class="btn-primary px-5 py-2.5 text-sm">Plan een scan</a>
     </div>
 
     <button
       id="menu-toggle"
-      class="flex h-10 w-10 items-center justify-center rounded-lg border border-line md:hidden"
+      class="flex h-10 w-10 items-center justify-center rounded-full border border-mist md:hidden"
       aria-label="Menu openen"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-paper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
-      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 text-paper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 text-indigo-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </nav>
 
-  <div id="mobile-menu" class="hidden border-t border-line bg-ink px-4 pb-5 pt-3 md:hidden">
+  <div id="mobile-menu" class="hidden border-t border-mist bg-paper px-6 pb-5 pt-3 md:hidden">
     {
       links.map((link) => (
-        <a href={link.href} class="block rounded-lg px-2 py-2.5 text-base font-medium text-muted transition-colors duration-200 hover:bg-surface hover:text-paper">
+        <a href={link.href} class="block rounded-xl px-2 py-2.5 font-display text-base font-normal text-indigo-ink/80 transition-colors duration-200 hover:bg-cloud hover:text-indigo-ink">
           {link.label}
         </a>
       ))
     }
-    <a href="#contact" class="btn-primary mt-3 block rounded-lg px-4 py-2.5 text-center text-base font-semibold">Plan een scan</a>
+    <a href="#contact" class="btn-primary mt-3 block px-5 py-3 text-center text-base">Plan een scan</a>
   </div>
 </header>
 

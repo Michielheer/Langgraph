@@ -1,21 +1,44 @@
 ---
 ---
 
-<section id="contact" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
-  <div class="reveal rounded-2xl border border-amber/25 bg-surface p-8 text-center shadow-[0_0_60px_rgba(255,176,32,0.1)] sm:p-14">
-    <h2 class="font-display mx-auto max-w-2xl text-3xl font-800 tracking-tight text-paper sm:text-4xl">
+<section id="contact" class="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+  <div class="reveal mx-auto max-w-3xl rounded-[32px] border border-mist bg-paper p-8 text-center shadow-hero sm:p-14">
+    <h2 class="font-display mx-auto max-w-2xl text-[clamp(2rem,3.6vw,3rem)] font-light leading-[1.08] tracking-[-0.03em] text-indigo-ink">
       Zet één portefeuille door de scan.
     </h2>
-    <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+    <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-storm">
       Lever een export aan van een portefeuille die je toch al converteert; je krijgt terug
       hoeveel leads en premie erin verstopt zit — voordat je iets betaalt.
     </p>
-    <a
-      href="mailto:info@houseofintelligence.nl?subject=Plan%20een%20scan"
-      class="btn-primary mt-8 inline-block rounded-lg px-8 py-3.5 text-base font-semibold"
-    >
-      Plan een scan op je portefeuille
-    </a>
-    <p class="mt-4 font-mono text-xs text-muted">info@houseofintelligence.nl</p>
+
+    <form id="scan-form" class="mx-auto mt-9 flex max-w-md flex-col gap-3 sm:flex-row sm:items-center">
+      <label for="scan-email" class="sr-only">E-mailadres</label>
+      <div class="flex w-full items-center rounded-full border border-mist bg-paper p-1.5 shadow-float focus-within:border-periwinkle sm:flex-1">
+        <input
+          id="scan-email"
+          name="email"
+          type="email"
+          required
+          placeholder="jouw@bedrijf.nl"
+          class="w-full rounded-full bg-transparent px-4 py-2 text-storm placeholder:text-fog focus:outline-none"
+        />
+        <button type="submit" class="btn-primary shrink-0 whitespace-nowrap px-5 py-2.5 text-sm">
+          Plan een scan
+        </button>
+      </div>
+    </form>
+    <p class="mt-4 text-[13px] text-fog">Of mail direct naar info@houseofintelligence.nl</p>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById("scan-form") as HTMLFormElement | null;
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
+    const body = encodeURIComponent(
+      `Hoi House of Intelligence,\n\nIk wil graag een portefeuille door de Leaklight-scan halen.\n\nMijn e-mailadres: ${email}\n`,
+    );
+    window.location.href = `mailto:info@houseofintelligence.nl?subject=${encodeURIComponent("Plan een scan")}&body=${body}`;
+  });
+</script>

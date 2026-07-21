@@ -1,5 +1,14 @@
 ---
-// Iconen: Lucide (ISC-licentie), inline SVG paths
+// Iconen: Lucide (ISC-licentie), inline SVG paths.
+// Badges: pastel wash (coral / mint / periwinkle / lavender) met icoon in donkere tint.
+const badges = [
+  { bg: "bg-coral-blush", fg: "text-coral" },
+  { bg: "bg-mint-veil", fg: "text-mint-deep" },
+  { bg: "bg-periwinkle-mist", fg: "text-periwinkle" },
+  { bg: "bg-lilac", fg: "text-periwinkle" },
+  { bg: "bg-coral-blush", fg: "text-coral" },
+  { bg: "bg-mint-veil", fg: "text-mint-deep" },
+];
 const types = [
   {
     titel: "Ontbrekende rechtsbijstand",
@@ -34,22 +43,22 @@ const types = [
 ];
 ---
 
-<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
-  <div class="reveal">
-    <p class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-amber">Wat we vinden</p>
-    <h2 class="font-display mt-3 max-w-2xl text-3xl font-800 tracking-tight text-paper sm:text-4xl">
+<section class="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+  <div class="reveal mx-auto max-w-2xl text-center">
+    <p class="font-display text-[13px] font-medium uppercase tracking-[0.16em] text-periwinkle-deep">Wat we vinden</p>
+    <h2 class="font-display mt-4 text-[clamp(2rem,3.6vw,3rem)] font-light leading-[1.08] tracking-[-0.03em] text-indigo-ink">
       Zes lek-types die in vrijwel elke portefeuille zitten.
     </h2>
   </div>
 
-  <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {
-      types.map((type) => (
-        <div class="reveal tilt rounded-2xl border border-line bg-surface p-6 hover:border-amber/30">
-          <span class="flex h-11 w-11 items-center justify-center rounded-lg border border-amber/30 bg-amber/10">
+      types.map((type, i) => (
+        <div class="reveal tilt rounded-2xl border border-mist bg-paper p-8 hover:border-lilac hover:shadow-float">
+          <span class:list={["flex h-10 w-10 items-center justify-center rounded-full", badges[i].bg]}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-amber"
+              class:list={["h-5 w-5", badges[i].fg]}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -61,8 +70,8 @@ const types = [
               <path d={type.icon} />
             </svg>
           </span>
-          <h3 class="font-display mt-4 text-lg font-700 text-paper">{type.titel}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-muted">{type.tekst}</p>
+          <h3 class="font-display mt-5 text-xl font-medium tracking-tight text-indigo-ink">{type.titel}</h3>
+          <p class="mt-2.5 leading-relaxed text-storm">{type.tekst}</p>
         </div>
       ))
     }

@@ -18,9 +18,10 @@ import {
 
 const SPACING = 1.18;
 const SCAN_MS = 3000;
-const AMBER = 0xffb020;
-const MINT = 0x4fd1a8;
-const BASE = 0x0f3540;
+const PERIWINKLE = 0x576cdb; // scanbalk / signaal
+const CORAL = 0xf25a5a; // lek gevonden
+const MINT = 0xa6f2d2; // gedekt / oké
+const BASE = 0xdfe3f2; // ongescande cel (licht lila-grijs)
 
 export interface CellSpec {
   leak: boolean;
@@ -53,7 +54,7 @@ const makeLabelCanvas = (label: string) => {
       : (Object.assign(document.createElement("canvas"), { width: 128, height: 128 }) as HTMLCanvasElement);
   const ctx = c.getContext("2d") as CanvasRenderingContext2D;
   ctx.fillStyle = "#ffffff";
-  ctx.font = "600 34px 'JetBrains Mono', monospace";
+  ctx.font = "600 32px Inter, system-ui, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(label, 64, 66);
@@ -76,11 +77,11 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
   camera.position.set(6.9, 7.7, 9.6);
   camera.lookAt(0, -0.4, 0);
 
-  scene.add(new AmbientLight(0xbfd8d2, 0.55));
-  const dir = new DirectionalLight(0xffffff, 1.1);
+  scene.add(new AmbientLight(0xffffff, 0.95));
+  const dir = new DirectionalLight(0xffffff, 0.55);
   dir.position.set(6, 12, 8);
   scene.add(dir);
-  const scanLight = new PointLight(AMBER, 0, 14, 1.6);
+  const scanLight = new PointLight(PERIWINKLE, 0, 14, 1.6);
   scanLight.position.y = 1.6;
   scene.add(scanLight);
 
@@ -95,7 +96,7 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
       new MeshBasicMaterial({
         map: new CanvasTexture(makeLabelCanvas(label) as HTMLCanvasElement),
         transparent: true,
-        color: 0x83a29f,
+        color: 0x575775,
       }),
     );
   }
@@ -134,8 +135,8 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
     cells.push({ tile, mat, labelMat, leak: spec.leak, x: tile.position.x, lift: 0, scanned: false });
   });
 
-  // Scanbalk: glowende amber wand die over de x-as veegt
-  const barMat = new MeshBasicMaterial({ color: AMBER, transparent: true, opacity: 0.55 });
+  // Scanbalk: glowende periwinkle wand die over de x-as veegt
+  const barMat = new MeshBasicMaterial({ color: PERIWINKLE, transparent: true, opacity: 0.5 });
   const bar = new Mesh(new BoxGeometry(0.06, 1.7, rows * SPACING + 1.2), barMat);
   bar.position.y = 0.85;
   group.add(bar);
@@ -143,15 +144,15 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
   const setCellScanned = (cell: Cell) => {
     cell.scanned = true;
     if (cell.leak) {
-      cell.mat.color.setHex(0x3d2c08);
-      cell.mat.emissive.setHex(AMBER);
-      cell.mat.emissiveIntensity = 0.75;
-      cell.labelMat.color.setHex(0x241800);
+      cell.mat.color.setHex(CORAL);
+      cell.mat.emissive.setHex(CORAL);
+      cell.mat.emissiveIntensity = 0.35;
+      cell.labelMat.color.setHex(0xffffff);
     } else {
-      cell.mat.color.setHex(0x123d3b);
+      cell.mat.color.setHex(MINT);
       cell.mat.emissive.setHex(MINT);
-      cell.mat.emissiveIntensity = 0.05;
-      cell.labelMat.color.setHex(MINT);
+      cell.mat.emissiveIntensity = 0.06;
+      cell.labelMat.color.setHex(0x2f8f6b);
     }
   };
   const resetCell = (cell: Cell) => {
@@ -160,7 +161,7 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
     cell.mat.color.setHex(BASE);
     cell.mat.emissive.setHex(0x000000);
     cell.mat.emissiveIntensity = 0;
-    cell.labelMat.color.setHex(0x83a29f);
+    cell.labelMat.color.setHex(0x575775);
     cell.tile.position.y = 0;
     cell.tile.scale.y = 1;
   };
@@ -215,7 +216,7 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
     bar.position.x = barX;
     scanLight.position.x = barX;
     scanLight.intensity = t < 1 ? 14 : Math.max(0, 14 - (now - scanStart - SCAN_MS) / 40);
-    barMat.opacity = t < 1 ? 0.55 : Math.max(0, 0.55 - (now - scanStart - SCAN_MS) / 600);
+    barMat.opacity = t < 1 ? 0.5 : Math.max(0, 0.5 - (now - scanStart - SCAN_MS) / 600);
     if (t >= 1 && !scanDone) {
       scanDone = true;
       setCounters(1);
@@ -229,7 +230,7 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
       cell.tile.position.y = 0.32 * cell.lift;
       cell.tile.scale.y = 1 + 1.6 * cell.lift;
       if (cell.scanned && cell.leak) {
-        cell.mat.emissiveIntensity = 0.6 + Math.sin(now / 320 + cell.x) * 0.18;
+        cell.mat.emissiveIntensity = 0.3 + Math.sin(now / 320 + cell.x) * 0.12;
       }
     }
 
@@ -255,7 +256,7 @@ export function initScanScene(opts: ScanSceneOptions): ScanSceneApi {
     rescan: () => {
       cells.forEach(resetCell);
       bar.visible = true;
-      barMat.opacity = 0.55;
+      barMat.opacity = 0.5;
       scanStart = performance.now();
       scanDone = false;
     },

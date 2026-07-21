@@ -7,6 +7,7 @@ const producten = [
     tekst:
       "Premielek-detectie tijdens polisconversie. Scant elke polis die wordt overgezet op dekkingsgaten en levert per klant leads met geschatte jaarpremie — zonder het conversieproces te vertragen.",
     icon: "M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2zM9 21h6",
+    badge: { bg: "bg-periwinkle-mist", fg: "text-periwinkle" },
   },
   {
     naam: "RisicoScout",
@@ -14,6 +15,7 @@ const producten = [
     tekst:
       "AI-gedreven pandrisico-inschatting voor verzekeraars. Beoordeelt objectrisico's op basis van beschikbare pand- en omgevingsdata.",
     icon: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5",
+    badge: { bg: "bg-coral-blush", fg: "text-coral" },
   },
   {
     naam: "Dekkingsparser",
@@ -21,6 +23,7 @@ const producten = [
     tekst:
       "Polisblad- en voorwaardenverwerking uit documenten. Maakt van PDF's gestructureerde dekkingsdata die je kunt vergelijken en doorzoeken.",
     icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5",
+    badge: { bg: "bg-mint-veil", fg: "text-mint-deep" },
   },
   {
     naam: "Conversie & migratie",
@@ -28,34 +31,35 @@ const producten = [
     tekst:
       "De kernpraktijk waar alles op draait: portefeuilleconversies via SIVI AOS/AFD, Level/ANVA en Progress OpenEdge.",
     icon: "M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4",
+    badge: { bg: "bg-lilac", fg: "text-periwinkle" },
   },
 ];
 ---
 
-<section id="producten" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
-  <div class="reveal">
-    <p class="font-mono text-xs font-medium uppercase tracking-[0.2em] text-amber">Producten</p>
-    <h2 class="font-display mt-3 max-w-2xl text-3xl font-800 tracking-tight text-paper sm:text-4xl">
+<section id="producten" class="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+  <div class="reveal mx-auto max-w-2xl text-center">
+    <p class="font-display text-[13px] font-medium uppercase tracking-[0.16em] text-periwinkle-deep">Producten</p>
+    <h2 class="font-display mt-4 text-[clamp(2rem,3.6vw,3rem)] font-light leading-[1.08] tracking-[-0.03em] text-indigo-ink">
       Software die in productie meedraait. Geen concepten.
     </h2>
   </div>
 
-  <div class="mt-10 grid gap-5 md:grid-cols-2">
+  <div class="mt-14 grid gap-6 md:grid-cols-2">
     {
       producten.map((p) => (
         <div
           class:list={[
-            "reveal tilt rounded-2xl border p-7",
+            "reveal tilt rounded-2xl border bg-paper p-8",
             p.vlaggenschip
-              ? "border-amber/30 bg-surface shadow-[0_0_40px_rgba(255,176,32,0.08)] md:col-span-2"
-              : "border-line bg-surface hover:border-amber/30",
+              ? "border-lilac shadow-float md:col-span-2"
+              : "border-mist hover:border-lilac hover:shadow-float",
           ]}
         >
           <div class="flex items-start justify-between gap-4">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-amber/30 bg-amber/10">
+            <span class:list={["flex h-10 w-10 shrink-0 items-center justify-center rounded-full", p.badge.bg]}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-amber"
+                class:list={["h-5 w-5", p.badge.fg]}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -68,13 +72,13 @@ const producten = [
               </svg>
             </span>
             {p.vlaggenschip && (
-              <span class="rounded-full border border-amber/40 bg-amber/10 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-widest text-amber">
+              <span class="rounded-full bg-periwinkle-deep px-3.5 py-1.5 font-display text-[12px] font-medium uppercase tracking-[0.12em] text-white">
                 Vlaggenschip
               </span>
             )}
           </div>
-          <h3 class="font-display mt-4 text-xl font-700 text-paper">{p.naam}</h3>
-          <p class:list={["mt-2 leading-relaxed text-muted", p.vlaggenschip && "max-w-2xl"]}>{p.tekst}</p>
+          <h3 class="font-display mt-5 text-2xl font-medium tracking-tight text-indigo-ink">{p.naam}</h3>
+          <p class:list={["mt-2.5 leading-relaxed text-storm", p.vlaggenschip && "max-w-2xl"]}>{p.tekst}</p>
         </div>
       ))
     }

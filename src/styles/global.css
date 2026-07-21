@@ -1,38 +1,58 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #071a1f;
-  --color-surface: #0b2830;
-  --color-surface-2: #0f3540;
-  --color-amber: #ffb020;
-  --color-mint: #4fd1a8;
-  --color-paper: #e9f1ef;
-  --color-muted: #83a29f;
-  --color-line: rgba(233, 241, 239, 0.09);
+  /* Kleuren — RevenueCat-geïnspireerd, licht */
+  --color-periwinkle: #576cdb;
+  --color-periwinkle-deep: #4a5cc4;
+  --color-indigo-ink: #1f1f47;
+  --color-storm: #3d3d5c;
+  --color-slate: #575775;
+  --color-fog: #626d88;
+  --color-ash: #84849a;
+  --color-ink: #171a1c;
+  --color-cloud: #f9f9fb;
+  --color-paper: #ffffff;
+  --color-mist: #eaedf6;
+  --color-haze: #d1d6e1;
+  --color-bone: #e3e6e8;
+  --color-lilac: #d6dbf5;
+  --color-periwinkle-mist: #c1c9f6;
+  --color-sky-tint: #abb6ed;
+  --color-coral: #f25a5a;
+  --color-coral-blush: #f7d4d4;
+  --color-mint: #a6f2d2;
+  --color-mint-veil: #c1f6e0;
+  --color-mint-deep: #2f8f6b;
 
-  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Typografie — display (Object Sans → Inter) + body (Helvetica Neue) */
+  --font-display: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
+
+  /* Violet-getinte schaduwen (nooit neutraal grijs) */
+  --shadow-float: rgba(73, 46, 107, 0.14) 0px 3px 16px 0px;
+  --shadow-hero: rgba(71, 92, 133, 0.25) 0px 4px 20px 0px, rgba(144, 138, 208, 0.1) 0px 30px 60px 0px;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 5.5rem;
 }
 
 body {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
+  background-color: var(--color-cloud);
+  color: var(--color-ink);
   font-family: var(--font-body);
-  /* Ambient gloed: amber rechtsboven, mint linksonder — zeer subtiel */
-  background-image:
-    radial-gradient(60rem 40rem at 110% -10%, rgba(255, 176, 32, 0.07), transparent 60%),
-    radial-gradient(55rem 40rem at -15% 110%, rgba(79, 209, 168, 0.06), transparent 60%);
-  background-attachment: fixed;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display);
 }
 
 ::selection {
-  background: rgba(255, 176, 32, 0.3);
+  background: var(--color-periwinkle-mist);
+  color: var(--color-indigo-ink);
 }
 
 a,
@@ -43,34 +63,58 @@ summary,
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-amber);
+  outline: 2px solid var(--color-periwinkle);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-/* Amber CTA met zachte gloed */
+/* Primaire pill — het enige chromatische vlak in het systeem */
 .btn-primary {
-  background: var(--color-amber);
-  color: #241800;
-  box-shadow: 0 0 24px rgba(255, 176, 32, 0.25);
-  transition: box-shadow 200ms ease, transform 200ms ease, background 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-periwinkle);
+  color: #ffffff;
+  border-radius: 9999px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  transition: background 200ms ease, box-shadow 200ms ease, transform 200ms ease;
 }
 .btn-primary:hover {
-  box-shadow: 0 0 40px rgba(255, 176, 32, 0.45);
+  background: var(--color-periwinkle-deep);
+  box-shadow: var(--shadow-float);
   transform: translateY(-1px);
 }
 
-.btn-secondary {
-  border: 1px solid var(--color-line);
-  color: var(--color-paper);
-  transition: border-color 200ms ease, background 200ms ease;
+/* Ghost text-link — voorkeurspatroon voor secundaire acties */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-periwinkle-deep);
+  font-family: var(--font-display);
+  font-weight: 500;
+  transition: gap 200ms ease;
 }
-.btn-secondary:hover {
-  border-color: rgba(233, 241, 239, 0.3);
-  background: rgba(233, 241, 239, 0.04);
+.btn-ghost:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.btn-ghost:hover svg {
+  transform: translateX(2px);
+}
+.btn-ghost svg {
+  transition: transform 200ms ease;
 }
 
-/* Scroll-reveal — alleen verbergen als JS draait (html.js), anders blijft alles zichtbaar */
+/* 3D-tilt op kaarten (JS zet de custom properties) */
+.tilt {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  will-change: transform;
+}
+
+/* Scroll-reveal — alleen verbergen als JS draait */
 html.js .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -81,21 +125,14 @@ html.js .reveal.is-visible {
   transform: none;
 }
 
-/* 3D-tilt op kaarten (JS zet de custom properties) */
-.tilt {
-  transform: perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-  transition: transform 200ms ease, border-color 200ms ease;
-  will-change: transform;
-}
-
 /* Puls-dot in de wordmark */
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 176, 32, 0.5);
+    box-shadow: 0 0 0 0 rgba(87, 108, 219, 0.45);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(255, 176, 32, 0);
+    box-shadow: 0 0 0 6px rgba(87, 108, 219, 0);
   }
 }
 .pulse-dot {
