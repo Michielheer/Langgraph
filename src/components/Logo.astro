@@ -1,6 +1,6 @@
 ---
 // HOI-logomerk als SVG — kleurt mee via currentColor (fill).
-// Twee balken · cirkel · klein vierkant, naar het geüploade merk.
+// Twee balken · cirkel · fors afgerond vierkant lager-rechts, naar het merk.
 interface Props {
   class?: string;
 }
@@ -9,14 +9,14 @@ const { class: className } = Astro.props;
 
 <svg
   class={className}
-  viewBox="0 0 131 57"
+  viewBox="0 0 141 61"
   fill="currentColor"
   xmlns="http://www.w3.org/2000/svg"
   aria-hidden="true"
   focusable="false"
 >
-  <rect x="0" y="0.8" width="19.2" height="54.4" rx="5.6" />
-  <rect x="26.4" y="0.8" width="19.2" height="54.4" rx="5.6" />
-  <circle cx="80" cy="27.6" r="23.2" />
-  <rect x="109.6" y="36" width="20.8" height="20.8" rx="4" />
+  <rect x="0" y="0" width="19.2" height="55.5" rx="5.6" />
+  <rect x="26.4" y="0" width="19.2" height="55.5" rx="5.6" />
+  <circle cx="85.3" cy="27.7" r="22.2" />
+  <rect x="116" y="35.8" width="24.7" height="24.7" rx="5.4" />
 </svg>
