@@ -108,6 +108,21 @@ summary,
   transition: transform 200ms ease;
 }
 
+/* Segmented control (Particulier / Zakelijk) */
+.seg-btn {
+  border-radius: 9999px;
+  padding: 0.55rem 1.4rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--color-slate);
+  transition: background 200ms ease, color 200ms ease;
+}
+.seg-btn[aria-pressed="true"] {
+  background: var(--color-periwinkle);
+  color: #ffffff;
+}
+
 /* 3D-tilt op kaarten (JS zet de custom properties) */
 .tilt {
   transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));

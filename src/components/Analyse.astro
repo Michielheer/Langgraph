@@ -1,0 +1,207 @@
+---
+// Iconen: Lucide (ISC-licentie), inline SVG paths
+const sporen = {
+  particulier: {
+    intro:
+      "Elke polis toetsen we tegen een normprofiel per productlijn. Zo zie je direct waar de dekking onder de norm zakt, van inboedel tot aansprakelijkheid.",
+    items: [
+      { titel: "Opstal & inboedel", tekst: "Verzekerde som getoetst en geïndexeerd tegen herbouw- en nieuwwaarde.", icon: "M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5" },
+      { titel: "Aansprakelijkheid (AVP)", tekst: "Ontbrekende of te lage particuliere aansprakelijkheid.", icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" },
+      { titel: "Rechtsbijstand", tekst: "Woonpolis zonder rechtsbijstand, het meest voorkomende hiaat.", icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6" },
+      { titel: "Onderverzekering", tekst: "Sommen die jaren niet zijn bijgesteld terwijl de waarde steeg.", icon: "M3 3v18h18M7 14l4-4 4 4 5-6" },
+    ],
+  },
+  zakelijk: {
+    intro:
+      "Voor bedrijven bepalen we het normprofiel op basis van de SBI-code. Per branche toetsen we of de dekking klopt en waar onderverzekering of hiaten zitten.",
+    items: [
+      { titel: "Bedrijfsgebouw & inventaris", tekst: "Onderverzekering op opstal, inventaris en goederenvoorraad.", icon: "M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" },
+      { titel: "Bedrijfsschade / stilstand", tekst: "Ontbrekende of te lage dekking voor omzetverlies bij stilstand.", icon: "M3 3v18h18M7 14l3-3 3 3 5-6" },
+      { titel: "Aansprakelijkheid (AVB)", tekst: "Bedrijfs- en beroepsaansprakelijkheid tegen het branchrisico.", icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" },
+      { titel: "Cyber & rechtsbijstand", tekst: "Groeiende risico's die vaak nog niet in het pakket zitten.", icon: "M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2z" },
+    ],
+  },
+};
+---
+
+<section id="analyse" class="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+  <div class="reveal mx-auto max-w-2xl text-center">
+    <p class="font-display text-[13px] font-medium uppercase tracking-[0.16em] text-periwinkle-deep">Analyse</p>
+    <h2 class="font-display mt-4 text-[clamp(2rem,3.6vw,3rem)] font-light leading-[1.08] tracking-[-0.03em] text-indigo-ink">
+      Particulier én zakelijk, in één analyse.
+    </h2>
+    <p class="mt-5 text-lg leading-relaxed text-storm">
+      Dezelfde methode, twee sporen. We leggen de huidige dekking naast het normprofiel en
+      maken het tekort zichtbaar. Wissel van spoor en zie de analyse mee bewegen.
+    </p>
+  </div>
+
+  <div class="reveal mt-8 flex justify-center">
+    <div class="inline-flex rounded-full border border-mist bg-paper p-1" role="group" aria-label="Kies spoor">
+      <button type="button" class="seg-btn" data-track="particulier" aria-pressed="true">Particulier</button>
+      <button type="button" class="seg-btn" data-track="zakelijk" aria-pressed="false">Zakelijk</button>
+    </div>
+  </div>
+
+  <div class="mt-12 grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+    <!-- Content per spoor -->
+    <div>
+      {
+        (["particulier", "zakelijk"] as const).map((key) => (
+          <div id={`panel-${key}`} class:list={["spoor-panel", key === "zakelijk" && "hidden"]}>
+            {key === "zakelijk" && (
+              <span class="mb-5 inline-flex items-center gap-2 rounded-full bg-periwinkle-mist px-3.5 py-1.5 font-display text-[12px] font-medium uppercase tracking-[0.1em] text-indigo-ink">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M7 4v16" />
+                </svg>
+                Normprofiel per SBI-code
+              </span>
+            )}
+            <p class="text-lg leading-relaxed text-storm">{sporen[key].intro}</p>
+            <ul class="mt-7 space-y-5">
+              {sporen[key].items.map((item) => (
+                <li class="flex gap-4">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lilac">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-periwinkle-deep" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d={item.icon} />
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 class="font-display text-lg font-medium tracking-tight text-indigo-ink">{item.titel}</h3>
+                    <p class="mt-1 leading-relaxed text-storm">{item.tekst}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- 3D-visualisatie -->
+    <div class="rounded-2xl border border-mist bg-paper p-5 shadow-float sm:p-6">
+      <div
+        id="cov-stage"
+        class="relative h-80 overflow-hidden rounded-xl bg-cloud"
+        role="img"
+        aria-label="3D-staafdiagram: per categorie de huidige dekking in mint, met een coral kap voor het tekort tot het normprofiel."
+      >
+        <canvas id="cov-canvas" class="h-full w-full"></canvas>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-mist pt-4 text-[13px] text-fog">
+        <span class="flex items-center gap-2"><span class="inline-block h-3 w-3 rounded-[3px] bg-mint"></span> Huidige dekking</span>
+        <span class="flex items-center gap-2"><span class="inline-block h-3 w-3 rounded-[3px] bg-coral"></span> Tekort t.o.v. norm</span>
+        <span class="flex items-center gap-2"><span class="inline-block h-[3px] w-4 rounded bg-periwinkle"></span> Normprofiel</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const TRACKS = [
+    {
+      key: "particulier",
+      bars: [
+        { code: "OPS", actual: 0.9, norm: 0.95 },
+        { code: "INB", actual: 0.55, norm: 0.9 },
+        { code: "AVP", actual: 0.15, norm: 0.75 },
+        { code: "RB", actual: 0.35, norm: 0.72 },
+        { code: "AUTO", actual: 0.82, norm: 0.82 },
+        { code: "REIS", actual: 0.6, norm: 0.62 },
+      ],
+    },
+    {
+      key: "zakelijk",
+      bars: [
+        { code: "GEB", actual: 0.86, norm: 0.95 },
+        { code: "INV", actual: 0.5, norm: 0.92 },
+        { code: "BS", actual: 0.28, norm: 0.82 },
+        { code: "AVB", actual: 0.6, norm: 0.85 },
+        { code: "RB", actual: 0.42, norm: 0.72 },
+        { code: "CYBER", actual: 0.15, norm: 0.8 },
+      ],
+    },
+  ];
+
+  const stage = document.getElementById("cov-stage")!;
+  const canvas = document.getElementById("cov-canvas") as HTMLCanvasElement;
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".seg-btn"));
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let current = "particulier";
+  let setTrackFn: ((key: string) => void) | null = null;
+
+  const wire = (api: {
+    resize: (w: number, h: number) => void;
+    setPointer: (x: number, y: number) => void;
+    clearPointer: () => void;
+    setTrack: (k: string) => void;
+  }) => {
+    setTrackFn = api.setTrack;
+    if (current !== "particulier") api.setTrack(current);
+    new ResizeObserver(() => api.resize(stage.clientWidth, stage.clientHeight)).observe(stage);
+    stage.addEventListener("pointermove", (e) => {
+      const r = stage.getBoundingClientRect();
+      api.setPointer((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5);
+    });
+    stage.addEventListener("pointerleave", () => api.clearPointer());
+  };
+
+  const sceneOpts = () => ({
+    width: stage.clientWidth,
+    height: stage.clientHeight,
+    dpr: Math.min(window.devicePixelRatio, 2),
+    tracks: TRACKS,
+    initial: "particulier",
+    reducedMotion,
+  });
+
+  const init = async () => {
+    if ("transferControlToOffscreen" in canvas) {
+      const off = canvas.transferControlToOffscreen();
+      const worker = new Worker(new URL("../scripts/coverageWorker.ts", import.meta.url), { type: "module" });
+      worker.postMessage({ type: "init", canvas: off, ...sceneOpts() }, [off]);
+      wire({
+        resize: (w, h) => worker.postMessage({ type: "resize", width: w, height: h }),
+        setPointer: (x, y) => worker.postMessage({ type: "pointer", x, y }),
+        clearPointer: () => worker.postMessage({ type: "pointerleave" }),
+        setTrack: (k) => worker.postMessage({ type: "track", key: k }),
+      });
+    } else {
+      const { initCoverageScene } = await import("../scripts/coverageScene");
+      wire(initCoverageScene({ canvas, ...sceneOpts() }));
+    }
+  };
+
+  // Toggle: content + 3D-spoor
+  const setActive = (key: string) => {
+    current = key;
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.track === key)));
+    document.querySelectorAll<HTMLElement>(".spoor-panel").forEach((p) => {
+      p.classList.toggle("hidden", p.id !== `panel-${key}`);
+    });
+    setTrackFn?.(key);
+  };
+  buttons.forEach((b) => b.addEventListener("click", () => setActive(b.dataset.track!)));
+
+  const start = () => {
+    init().catch(() => {
+      // WebGL niet beschikbaar: verberg de canvas-kaart, de tekst blijft volledig bruikbaar
+      stage.closest(".rounded-2xl")?.classList.add("hidden");
+    });
+  };
+  const startIdle = () =>
+    "requestIdleCallback" in window ? requestIdleCallback(() => start(), { timeout: 2500 }) : setTimeout(start, 300);
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        io.disconnect();
+        startIdle();
+      }
+    });
+    io.observe(stage);
+  } else {
+    startIdle();
+  }
+</script>
