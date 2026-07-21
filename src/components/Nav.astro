@@ -3,6 +3,7 @@ import Logo from "./Logo.astro";
 
 const links = [
   { href: "#werkwijze", label: "Werkwijze" },
+  { href: "#analyse", label: "Analyse" },
   { href: "#producten", label: "Producten" },
   { href: "#cases", label: "Cases" },
   { href: "#over-ons", label: "Over ons" },
@@ -22,7 +23,7 @@ const links = [
       </span>
     </a>
 
-    <div class="hidden items-center gap-8 md:flex">
+    <div class="hidden items-center gap-8 lg:flex">
       {
         links.map((link) => (
           <a
@@ -38,7 +39,7 @@ const links = [
 
     <button
       id="menu-toggle"
-      class="flex h-10 w-10 items-center justify-center rounded-full border border-mist md:hidden"
+      class="flex h-10 w-10 items-center justify-center rounded-full border border-mist lg:hidden"
       aria-label="Menu openen"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -52,7 +53,7 @@ const links = [
     </button>
   </nav>
 
-  <div id="mobile-menu" class="hidden border-t border-mist bg-paper px-6 pb-5 pt-3 md:hidden">
+  <div id="mobile-menu" class="hidden border-t border-mist bg-paper px-6 pb-5 pt-3 lg:hidden">
     {
       links.map((link) => (
         <a href={link.href} class="block rounded-xl px-2 py-2.5 font-display text-base font-normal text-indigo-ink/80 transition-colors duration-200 hover:bg-cloud hover:text-indigo-ink">
